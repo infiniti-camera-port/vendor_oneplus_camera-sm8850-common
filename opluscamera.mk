@@ -1,6 +1,7 @@
 # Blob dependencies
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.common-V3-ndk.vendor
+    android.hardware.graphics.common-V3-ndk.vendor \
+    CameraThemedIcon
 
 # Framework
 # PRODUCT_BOOT_JARS += \
