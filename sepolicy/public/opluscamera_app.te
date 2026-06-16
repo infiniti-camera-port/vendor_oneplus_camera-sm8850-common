@@ -1,2 +1,8 @@
 type opluscamera_app, domain, mlstrustedsubject;
+# Mark as appdomain in PUBLIC (plat-visible) policy, not only via the vendor-side
+# app_domain() macro: the system_ext_sepolicy.cil neverallow check runs without vendor
+# policy, so the vendor-set attribute is invisible there and opluscamera_app would be
+# seen as a bare non-app domain -> tripping the /data/system core_data_file_type
+# neverallows (domain.te:1108/1132) for the camera_rus allows. (Matches OP15InfinityX.)
+typeattribute opluscamera_app appdomain;
 type opluscamera_app_data_file, file_type, data_file_type, app_data_file_type;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ********************************************************************************
+ ** File: default-permissions-oneplus-gallery.xml
+ ** Description:
+ **     Default runtime (dangerous) permission grants for the preinstalled
+ **     OnePlus Gallery (OppoGallery2.apk, package com.oneplus.gallery).
+ **
+ **     OppoGallery2 ships as a preinstalled priv-app (camera-vendor.mk) and
+ **     requests dangerous USER_SENSITIVE media/storage/location permissions.
+ **     privapp-permissions only whitelists signature|privileged perms; it does
+ **     NOT auto-grant dangerous runtime perms. Stock OOS grants these via an OEM
+ **     default-permissions XML that was not captured in the blob dump, so on the
+ **     port the gallery boots with all media perms granted=false ->
+ **     "ExpandParseManager: parse permissions denied!" -> self-SIGKILL at launch.
+ **
+ **     This grants exactly the dangerous perms the gallery declares (fixed=false
+ **     so the user can still revoke them in Settings), restoring the first-boot
+ **     auto-grant a preinstalled system gallery expects.
+ ********************************************************************************/
+  -->
+<exceptions>
+    <exception package="com.oneplus.gallery">
+        <permission name="android.permission.READ_MEDIA_IMAGES" fixed="false"/>
+        <permission name="android.permission.READ_MEDIA_VIDEO" fixed="false"/>
+        <permission name="android.permission.READ_MEDIA_AUDIO" fixed="false"/>
+        <permission name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" fixed="false"/>
+        <permission name="android.permission.READ_EXTERNAL_STORAGE" fixed="false"/>
+        <permission name="android.permission.WRITE_EXTERNAL_STORAGE" fixed="false"/>
+        <permission name="android.permission.ACCESS_MEDIA_LOCATION" fixed="false"/>
+        <permission name="android.permission.ACCESS_COARSE_LOCATION" fixed="false"/>
+        <permission name="android.permission.ACCESS_FINE_LOCATION" fixed="false"/>
+        <permission name="android.permission.BLUETOOTH_CONNECT" fixed="false"/>
+    </exception>
+</exceptions>
