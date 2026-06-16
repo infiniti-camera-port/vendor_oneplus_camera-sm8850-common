@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ********************************************************************************
+ ** File: oplus-gallery-receiver-compat-config.xml
+ ** Description:
+ **     Platform-compat override that re-declares the AOSP change
+ **     DYNAMIC_RECEIVER_EXPLICIT_EXPORT_REQUIRED (id 161145287) as disabled.
+ **
+ **     The preinstalled OnePlus Gallery (OppoGallery2, com.oneplus.gallery,
+ **     targetSdk 36) embeds the OPlus AI-Unit SDK, whose BroadcastDispatcher
+ **     registers a dynamic receiver for a custom (non-protected) broadcast via a
+ **     flags=0 code path (no RECEIVER_EXPORTED / RECEIVER_NOT_EXPORTED). On
+ **     Android 14+ that change is @EnabledSince(34), so AOSP
+ **     BroadcastController.registerReceiverWithFeatureTraced throws a
+ **     SecurityException ("One of RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED
+ **     should be specified ..."). The SDK registers from its own HandlerThread
+ **     with no try/catch, so the exception is uncaught and the gallery process
+ **     is killed at launch. (OnePlus's own framework does not enforce this for
+ **     system/priv apps, which is why the app shipped fine on stock OOS.)
+ **
+ **     CompatConfig.loadConfigFiles() reads /system/etc/compatconfig FIRST, then
+ **     /system_ext/etc/compatconfig, and readConfig() does
+ **     mChanges.put(id, new CompatChange(change)), so the last write by id wins.
+ **     This file (installed to system_ext) overwrites the platform definition of
+ **     161145287. CompatChange.isEnabled() short-circuits on disabled=true and
+ **     returns false for every app (CompatChange.java:249), so
+ **     requireExplicitFlagForDynamicReceivers becomes false and the throw is
+ **     skipped. (disabled is a static change-definition attribute, NOT a
+ **     per-package override, so the @Overridable gate is irrelevant here.)
+ **
+ ** NOTE: This relaxes the explicit-export-flag enforcement ROM-wide (not just
+ **       for the gallery), matching pre-Android-14 / OEM behavior. The
+ **       trade-off is minor: dynamic receivers that omit the export flag default
+ **       to exported instead of crashing. Accepted to keep the OnePlus gallery
+ **       working as a standalone app without forking frameworks/base or
+ **       re-signing the (obfuscated, 149 MB) APK.
+ ********************************************************************************/
+  -->
+<config>
+    <compat-change disabled="true" id="161145287" name="DYNAMIC_RECEIVER_EXPLICIT_EXPORT_REQUIRED" />
+</config>
