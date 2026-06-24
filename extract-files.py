@@ -110,6 +110,26 @@ def blob_fixup_opluscamera_strip_oem_perms(ctx, file, file_path, *args, tmp_dir=
         manifest.write_text(fixed, encoding='utf-8')
 
 
+def blob_fixup_sdk_facebeauty(ctx, file, file_path, *args, tmp_dir=None, **kwargs):
+    # Re-point the guarded ProductJni probe from /product/lib64 to /system_ext/lib64.
+    # On LineageOS the lib ships at system_ext (my_product->system_ext remap), so the
+    # /product probe fails -> unguarded fallback -> zero FaceBeautyParams -> SIGSEGV.
+    # Anchored on the globally unique lib-path string in OplusFaceBeautyPreview;
+    # immune to R8/obfuscated class-path drift — no line-context dependency.
+    if tmp_dir is None:
+        return
+    OLD = '/product/lib64/libApsFaceBeautyPreviewProductJni.so'
+    NEW = '/system_ext/lib64/libApsFaceBeautyPreviewProductJni.so'
+    for smali in glob.glob(str(Path(tmp_dir) / 'smali*/**/*.smali'), recursive=True):
+        try:
+            data = open(smali, encoding='utf-8', errors='ignore').read()
+        except OSError:
+            continue
+        if OLD in data:
+            open(smali, 'w', encoding='utf-8').write(data.replace(OLD, NEW))
+            return
+
+
 def blob_fixup_oppogallery_unpack(ctx, file, file_path, *args, tmp_dir=None, **kwargs):
     # Gallery manifest-only fix: skip smali decode/reassembly (-s). Only the
     # AndroidManifest is edited (strip undefined OEM permission gates), so the
@@ -140,7 +160,11 @@ lib_fixups: lib_fixups_user_type = {
 
 blob_fixups = {
     'system_ext/framework/com.oplus.camera.unit.sdk.jar': blob_fixup()
-        .apktool_patch('patches-sdk'),
+        .apktool_unpack('patches-sdk')
+        .patch_dir('patches-sdk')
+        .call(blob_fixup_sdk_facebeauty)
+        .apktool_pack()
+        .stripzip(),
     # OplusCamera.apk crash-on-open fixes (re-authored to be
     # signature-anchored, verified against the apk bytecode): font-NPE neuter +
     # strip undefined OEM permission gates. apktool unpack -> edit smali/manifest -> repack.
