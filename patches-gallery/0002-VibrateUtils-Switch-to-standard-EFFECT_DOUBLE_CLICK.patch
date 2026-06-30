@@ -1,58 +1,39 @@
-From 1dd09b81c37aa6b021f69d0e0bbf50f3f05b7659 Mon Sep 17 00:00:00 2001
+From 9d3b8a63834643926481d81e61415574ac7a7ccc Mon Sep 17 00:00:00 2001
 From: Hecheng Yu <kde-yyds@qq.com>
 Date: Wed, 3 Jun 2026 21:40:31 +0800
 Subject: [PATCH 2/4] VibrateUtils: Switch to standard EFFECT_DOUBLE_CLICK
 
 E AndroidRuntime: java.lang.NullPointerException: null cannot be cast to non-null type com.oplus.os.LinearmotorVibrator
 ---
- .../gallery/addon/os/VibratorUtils.smali      | 177 +++++-------------
- 1 file changed, 48 insertions(+), 129 deletions(-)
+ .../gallery/addon/os/VibratorUtils.smali      | 146 ++----------------
+ 1 file changed, 9 insertions(+), 137 deletions(-)
 
 diff --git a/smali_classes7/com/oplus/gallery/addon/os/VibratorUtils.smali b/smali_classes7/com/oplus/gallery/addon/os/VibratorUtils.smali
-index b6da580..4cb6f8a 100644
+index 8563519d1..276503994 100644
 --- a/smali_classes7/com/oplus/gallery/addon/os/VibratorUtils.smali
 +++ b/smali_classes7/com/oplus/gallery/addon/os/VibratorUtils.smali
-@@ -1092,7 +1092,7 @@
- .end method
- 
- .method public static final i(Landroid/content/Context;Lcom/oplus/gallery/addon/os/VibratorUtils$EffectType;)V
--    .locals 2
-+    .locals 4
-     .annotation build Landroid/annotation/SuppressLint;
-         value = {
-             "WrongConstant"
-@@ -1103,147 +1103,66 @@
+@@ -795,147 +795,19 @@
      .end annotation
  
      .line 1
--    sget-object v0, Lcom/oplus/gallery/addon/os/VibratorUtils;->d:Lcom/oplus/aiunit/vision/nyc;
-+    const-string v0, "context"
-+    invoke-static {p0, v0}, Lkotlin/jvm/internal/Intrinsics;->checkNotNullParameter(Ljava/lang/Object;Ljava/lang/String;)V
-+    const-string v0, "type"
-+    invoke-static {p1, v0}, Lkotlin/jvm/internal/Intrinsics;->checkNotNullParameter(Ljava/lang/Object;Ljava/lang/String;)V
- 
-     .line 2
-+    invoke-static {p0}, Lcom/oplus/gallery/addon/os/VibratorUtils;->c(Landroid/content/Context;)Z
-+    move-result v0
-+    if-eqz v0, :cond_2
-+
-     .line 3
+-    sget-object v0, Lcom/oplus/gallery/addon/os/VibratorUtils;->d:Lcom/oplus/aiunit/vision/nhc;
 +    const-string v0, "vibrator"
 +    invoke-virtual {p0, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
-+    move-result-object p0
-+    const-string v0, "null cannot be cast to non-null type android.os.Vibrator"
-+    invoke-static {p0, v0}, Lkotlin/jvm/internal/Intrinsics;->checkNotNull(Ljava/lang/Object;Ljava/lang/String;)V
-+    check-cast p0, Landroid/os/Vibrator;
++    move-result-object v0
++    check-cast v0, Landroid/os/Vibrator;
+ 
+     .line 2
++    const/4 v1, 0x4
++    invoke-static {v1}, Landroid/os/VibrationEffect;->createPredefined(I)Landroid/os/VibrationEffect;
++    move-result-object v1
 +
-+    if-eqz p0, :cond_1
-+    invoke-virtual {p0}, Landroid/os/Vibrator;->hasVibrator()Z
-+    move-result v0
-     if-nez v0, :cond_0
-+    goto :goto_0
+     .line 3
+-    if-nez v0, :cond_0
++    invoke-virtual {v0, v1}, Landroid/os/Vibrator;->vibrate(Landroid/os/VibrationEffect;)V
  
      .line 4
 -    .line 5
--    new-instance v0, Lcom/oplus/aiunit/vision/nyc;
+-    new-instance v0, Lcom/oplus/aiunit/vision/nhc;
 -
 -    .line 6
 -    .line 7
@@ -70,17 +51,17 @@ index b6da580..4cb6f8a 100644
 -    .line 13
 -    .line 14
 -    .line 15
--    invoke-virtual {v0, p0}, Lcom/oplus/aiunit/vision/nyc;->a(Landroid/content/Context;)V
+-    invoke-virtual {v0, p0}, Lcom/oplus/aiunit/vision/nhc;->a(Landroid/content/Context;)V
 -
 -    .line 16
 -    .line 17
 -    .line 18
--    sput-object v0, Lcom/oplus/gallery/addon/os/VibratorUtils;->d:Lcom/oplus/aiunit/vision/nyc;
+-    sput-object v0, Lcom/oplus/gallery/addon/os/VibratorUtils;->d:Lcom/oplus/aiunit/vision/nhc;
 -
 -    .line 19
 -    .line 20
-     :cond_0
--    sget-object p0, Lcom/oplus/gallery/addon/os/VibratorUtils;->d:Lcom/oplus/aiunit/vision/nyc;
+-    :cond_0
+-    sget-object p0, Lcom/oplus/gallery/addon/os/VibratorUtils;->d:Lcom/oplus/aiunit/vision/nhc;
 -
 -    .line 21
 -    .line 22
@@ -125,15 +106,8 @@ index b6da580..4cb6f8a 100644
 -
 -    .line 40
 -    .line 41
-     const/4 v0, 0x4
-+    invoke-static {v0}, Landroid/os/VibrationEffect;->createPredefined(I)Landroid/os/VibrationEffect;
-+    move-result-object v0
-+    :try_start_0
-+    invoke-virtual {p0, v0}, Landroid/os/Vibrator;->vibrate(Landroid/os/VibrationEffect;)V
-+    :try_end_0
-+    .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
-+    goto :goto_1
- 
+-    const/4 v0, 0x4
+-
 -    .line 42
 -    if-eq p1, v0, :cond_2
 -
@@ -150,17 +124,9 @@ index b6da580..4cb6f8a 100644
 -
 -    .line 48
 -    goto :goto_0
-+    :catch_0
-+    move-exception p0
-+    const-string v0, "VibratorUtils"
-+    const-string v1, "Failed to vibrate with EFFECT_DOUBLE_CLICK"
-+    const/4 v2, 0x0
-+    invoke-static {v0, v1, p0}, Lcom/oplus/aiunit/vision/cpe;->c(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
-+    goto :goto_1
- 
+-
 -    .line 49
-+    .line 5
-     :cond_1
+-    :cond_1
 -    new-instance p0, Lkotlin/NoWhenBranchMatchedException;
 -
 -    .line 50
@@ -171,16 +137,9 @@ index b6da580..4cb6f8a 100644
 -    .line 53
 -    .line 54
 -    throw p0
-+    :goto_0
-+    const-string p0, "VibratorUtils"
-+    const-string v0, "Vibrator not available or has no vibrator"
-+    const/4 v1, 0x0
-+    invoke-static {p0, v0, v1}, Lcom/oplus/aiunit/vision/cpe;->c(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
-+    return-void
- 
+-
 -    .line 55
-+    .line 6
-     :cond_2
+-    :cond_2
 -    const/16 v0, 0x32
 -
 -    .line 56
@@ -202,18 +161,12 @@ index b6da580..4cb6f8a 100644
 -    .line 62
 -    :cond_5
 -    :goto_0
--    invoke-virtual {p0, v0}, Lcom/oplus/aiunit/vision/nyc;->b(I)V
-+    const-string p0, "VibratorUtils"
-+    const-string p1, "the current device does not enable vibration"
-+    const/4 v0, 0x0
-+    invoke-static {p0, p1, v0}, Lcom/oplus/aiunit/vision/cpe;->c(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
-+    return-void
- 
+-    invoke-virtual {p0, v0}, Lcom/oplus/aiunit/vision/nhc;->b(I)V
+-
 -    .line 63
 -    .line 64
 -    .line 65
 -    :cond_6
-+    :goto_1
      return-void
  .end method
 -- 
