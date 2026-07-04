@@ -95,3 +95,8 @@ include vendor/oneplus/camera-sm8850-common/sepolicy/SEPolicy.mk
 
 # Inherit from camera-vendor.mk
 $(call inherit-product, proprietary/vendor/oneplus/camera-sm8850-common/camera-sm8850-common-vendor.mk)
+
+# OEM signature-permission definer (O3 Phase-B1): platform-signed, code-less app
+# that defines the oplus/oppo signature perms whose OOS definer
+# (oplus-framework-res.apk) is not shipped, so the ported OEM apps can hold them.
+$(call inherit-product, vendor/oneplus/camera-sm8850-common/definer/oplus-definer.mk)

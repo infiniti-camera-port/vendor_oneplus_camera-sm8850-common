@@ -1,0 +1,21 @@
+//
+// Copyright (C) 2026 The LineageOS Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+// OEM signature-permission definer: a platform-signed, code-less app that defines
+// the oplus/oppo signature permissions whose OOS definer (oplus-framework-res.apk)
+// is not shipped on crDroid. rearchv2 O3 §4.
+android_app {
+    name: "OplusPermissionDefiner",
+    srcs: [],
+    resource_dirs: [],
+    manifest: "AndroidManifest.xml",
+    system_ext_specific: true,
+    certificate: "platform",
+    platform_apis: true,
+    optimize: {
+        enabled: false,
+    },
+}
