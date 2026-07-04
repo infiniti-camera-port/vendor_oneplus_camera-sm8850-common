@@ -40,6 +40,16 @@
         <permission name="android.permission.WRITE_SECURE_SETTINGS"/>
         <permission name="android.permission.SUBSCRIBE_TO_KEYGUARD_LOCKED_STATE"/>
         <permission name="oppo.permission.OPPO_COMPONENT_SAFE"/>
+        <permission name="com.oplus.permission.safe.AI_APP"/>
+        <permission name="com.oplus.permission.safe.APP_MANAGER"/>
+        <permission name="com.oplus.permission.safe.CAMERA"/>
+        <permission name="com.oplus.permission.safe.LOG"/>
+        <permission name="com.oplus.permission.safe.PHONE"/>
+        <permission name="com.oplus.permission.safe.POWER"/>
+        <permission name="com.oplus.permission.safe.PROTECT"/>
+        <permission name="com.oplus.permission.safe.READ_COMMON"/>
+        <permission name="com.oplus.permission.safe.SETTINGS"/>
+        <permission name="com.oplus.permission.safe.WINDOW"/>
      </privapp-permissions>
 
     <!-- OPLUS gallery -->
