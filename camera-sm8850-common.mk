@@ -98,3 +98,8 @@ PRODUCT_VENDOR_PROPERTIES += \
     ro.camera.enableCamera1MaxZsl=1 \
     ro.camera.notify_nfc=1 \
     ro.camerax.extensions.enabled=true
+
+# OEM signature-permission definer (O3 Phase-B1): platform-signed, code-less app
+# that defines the oplus/oppo signature perms whose OOS definer
+# (oplus-framework-res.apk) is not shipped, so the ported OEM apps can hold them.
+$(call inherit-product, vendor/oneplus/camera-sm8850-common/definer/oplus-definer.mk)
