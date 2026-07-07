@@ -1,0 +1,25 @@
+// SafeBox / Private-Safe translation shim: platform-signed com.oplus.encryption app that
+// reimplements the dropped OEM vault service onto native FBE Private Space.
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+android_app {
+    name: "OplusEncryptionSafeBox",
+    srcs: [
+        "java/**/*.java",
+        "aidl/**/*.aidl",
+    ],
+    aidl: {
+        local_include_dirs: ["aidl"],
+    },
+    manifest: "AndroidManifest.xml",
+    // Needs @hide/@SystemApi: UserManager.getProfiles(int)/isQuietModeEnabled,
+    // createContextAsUser, UserInfo.isPrivateProfile, MediaStore private volumes.
+    platform_apis: true,
+    certificate: "platform",
+    system_ext_specific: true,
+    optimize: {
+        enabled: false,
+    },
+}

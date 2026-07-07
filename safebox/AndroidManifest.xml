@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SafeBox / Private-Safe translation shim.
+  package MUST be com.oplus.encryption: the OnePlus gallery binds the vault service with
+  Intent(action).setPackage("com.oplus.encryption") + <queries><package com.oplus.encryption/>.
+  Platform-signed; installs to /system_ext/app. Move-to-safe proxies onto the crDroid Axion
+  Sandbox's encrypted vault (com.android.axion.sandbox) via its exported VaultFileProvider.
+  com.oplus.permission.safe.PRIVATE is defined by org.infiniti.permissiondefiner (not redefined
+  here) and granted to the platform-signed gallery by cert match.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.oplus.encryption">
+
+    <!-- Resolve source media to a MediaStore content Uri before handing it to the Sandbox. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.oplus.permission.safe.PRIVATE" />
+
+    <!-- Package visibility (Android 11+): the shim calls the Sandbox's vault provider and
+         launches its MainActivity, so it must be able to see the Sandbox package. -->
+    <queries>
+        <package android:name="com.android.axion.sandbox" />
+    </queries>
+
+    <application
+        android:label="Private Safe"
+        android:allowBackup="false"
+        android:directBootAware="true">
+
+        <!-- The load-bearing vault surface. Action + package are what the gallery binds. -->
+        <service
+            android:name="com.oplus.encryption.EncyptionService"
+            android:exported="true"
+            android:permission="com.oplus.permission.safe.PRIVATE">
+            <intent-filter>
+                <action android:name="com.oplus.encryption.EncyptionService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <!-- "Open Private Safe" delegation target: gallery launches action
+             com.oplus.filemanager.FILE_SAFE at package com.oplus.encryption -> open the Axion
+             Sandbox app on its Vault tab. Translucent (invisible redirect). -->
+        <activity
+            android:name="com.oplus.encryption.FileSafeActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="com.oplus.filemanager.FILE_SAFE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Thin lifecycle provider (update_background_status only). -->
+        <provider
+            android:name="com.oplus.encryption.SafeBoxTranslationProvider"
+            android:authorities="com.oplus.encyptionserver"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:permission="com.oplus.permission.safe.PRIVATE" />
+    </application>
+</manifest>
