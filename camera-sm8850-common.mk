@@ -25,6 +25,11 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/oplus-features/com.oplus.android-features.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/com.oplus.android-features.xml \
     $(LOCAL_PATH)/configs/init/init.oplus.camera_rus.rc:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/init/init.oplus.camera_rus.rc
 
+# cryptoeng HAL service rc: device-tree-authored (see configs/init/) instead of
+# blob-fixup-patched out of the OEM odm extract, so it stays host_init_verifier-clean.
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/init/vendor.oplus.hardware.cryptoeng@1.0-service.rc:$(TARGET_COPY_OUT_ODM)/etc/init/vendor.oplus.hardware.cryptoeng@1.0-service.rc
+
 # Properties
 # Force preview to SDR. The camera app places the preview on a BT2020_HLG
 # SurfaceView with 5.0 HDR/SDR headroom (PreviewHDRControl); the sRGB panel has
