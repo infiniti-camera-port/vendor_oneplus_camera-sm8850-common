@@ -1,0 +1,12 @@
+soong_namespace {}
+
+// The AON framework-res static RRO must land in product/overlay (the OMS
+// partition scan path, as on stock). The build system refuses apks in
+// PRODUCT_COPY_FILES and extract-utils has no overlay-dir package writer,
+// so consume the extract-generated filegroup via prebuilt_overlay.
+prebuilt_overlay {
+    name: "aon.frameworkres.overlay.product",
+    src: ":aon_frameworkres_overlay_apk",
+    filename: "aon.frameworkres.overlay.product.apk",
+    product_specific: true,
+}
