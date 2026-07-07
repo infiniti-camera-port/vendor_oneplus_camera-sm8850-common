@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Restores the OnePlus/Oplus OEM system-feature declaration dropped by the
+  LineageOS port. OppoGallery2's OLive (motion/live photo) decoder gates all
+  playback on PackageManager.hasSystemFeature("oplus.software.gallery.olive")
+  (AndroidOliveDecodeImpl.k(); getVideoStream() returns null when false), so
+  without this the gallery silently refuses to replay valid motion photos.
+
+  Minimal by design: only the single feature the gallery actually gates the
+  motion-photo playback path on. Other oplus.software.* features from the stock
+  com.oplus.android-features.xml are intentionally omitted (unrelated / could
+  make other apps assume unsupported HW).
+-->
+<permissions>
+	<feature name="oplus.software.gallery.olive"/>
+</permissions>
