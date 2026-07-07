@@ -19,13 +19,29 @@ PRODUCT_COPY_FILES += \
 # Properties
 PRODUCT_PRODUCT_PROPERTIES += \
     persist.vendor.camera.privapp.list=com.oplus.camera \
+    persist.sys.feature.dolby_vision=1 \
+    persist.sys.feature.dolby_vision_app=1 \
+    persist.sys.feature.hdr_vision_app=1 \
+    persist.sys.feature.localhdr_version=2 \
+    persist.sys.feature.support.edrlistener=true \
+    persist.sys.feature.uhdr.support=true \
+    persist.sys.camera.private.log.enable=debug,pre,mp \
+    ro.build.version.module.sub_api=2 \
+    ro.build.version.oplus.api=38 \
+    ro.build.version.oplus.sub_api=47 \
+    ro.build.version.oplusrom=V16.1.0 \
+    ro.build.version.oplusrom.confidential=V16.1.0 \
+    ro.build.version.oplusrom.display=16.0.8 \
     ro.com.google.lens.oem_camera_package=com.oplus.camera \
-    ro.com.google.lens.oem_image_package=com.oneplus.gallery \
+    ro.com.google.lens.oem_image_package=com.oneplus.gallery,com.oplus.screenshot \
+    ro.oplus.fusionlight=true \
     ro.oplus.camera.defercap.support=1 \
+    ro.oplus.system.gallery.name=com.oneplus.gallery \
     ro.oplus.system.camera.name=com.oplus.camera \
     ro.oplus.camera.defercap.all.quick.visible.support=1 \
-    ro.oplus.camera.livephoto.support=1 \
-    ro.camera.disableHeicUltraHDR=1 \
+    ro.vendor.oplus.hdr.uniform=1 \
+    ro.vendor.oplus.vendorxml.enable=1 \
+    vendor.oplus.hdr.uniform.debug=1 \
     oplus.software.camera.10bit=1 \
     vendor.camera.aux.packagelist=com.oplus.camera \
     ro.oplus.camera.facing.front.need.disable.nfc=1 \
@@ -53,7 +69,7 @@ $(call soong_config_set,camera,package_name,com.oplus.packageName)
 $(call soong_config_set_bool,camera,override_format_from_reserved,true)
 
 # SEpolicy
-include vendor/oplus/camera/sepolicy/SEPolicy.mk
+include vendor/oneplus/camera-sm8850-common/sepolicy/SEPolicy.mk
 
 # Inherit from camera-vendor.mk
-$(call inherit-product, vendor/oplus/camera/camera/camera-vendor.mk)
+$(call inherit-product, proprietary/vendor/oneplus/camera-sm8850-common/camera-sm8850-common-vendor.mk)

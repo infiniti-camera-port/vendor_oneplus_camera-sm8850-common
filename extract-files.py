@@ -55,12 +55,8 @@ lib_fixups: lib_fixups_user_type = {
 }
 
 blob_fixups = {
-    'system_ext/priv-app/OplusCamera/OplusCamera.apk': blob_fixup()
-        .apktool_patch('patches'),
     'system_ext/framework/com.oplus.camera.unit.sdk.jar': blob_fixup()
         .apktool_patch('patches-sdk'),
-    'system_ext/priv-app/OppoGallery2/OppoGallery2.apk': blob_fixup()
-        .apktool_patch('patches-gallery'),
     'odm/etc/init/init.camera_process.rc': blob_fixup()
         .regex_replace(
             '''on post-fs-data
@@ -87,20 +83,21 @@ on property:sys.camera.user.removed=*
 }  # fmt: skip
 
 namespace_imports = [
-    'vendor/oplus/camera/camera',
-    'vendor/oneplus/dodge',
-    'vendor/oneplus/sm8750-common',
+    'proprietary/vendor/oneplus/camera-sm8850-common',
+    'vendor/oneplus/sm8850-common',
     'hardware/oplus',
 ]
 
 module = ExtractUtilsModule(
-    'camera',
-    'oplus/camera',
-    device_rel_path='vendor/oplus/camera',
+    'camera-sm8850-common',
+    'oneplus',
+    device_rel_path='vendor/oneplus/camera-sm8850-common',
     blob_fixups=blob_fixups,
     lib_fixups=lib_fixups,
     namespace_imports=namespace_imports,
 )
+module.vendor_rel_path = 'proprietary/vendor/oneplus/camera-sm8850-common'
+module.vendor_path = str(Path(__file__).resolve().parents[3] / module.vendor_rel_path)
 
 if __name__ == '__main__':
     utils = ExtractUtils.device(module)
