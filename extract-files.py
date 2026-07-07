@@ -55,12 +55,8 @@ lib_fixups: lib_fixups_user_type = {
 }
 
 blob_fixups = {
-    'system_ext/priv-app/OplusCamera/OplusCamera.apk': blob_fixup()
-        .apktool_patch('patches'),
     'system_ext/framework/com.oplus.camera.unit.sdk.jar': blob_fixup()
         .apktool_patch('patches-sdk'),
-    'system_ext/priv-app/OppoGallery2/OppoGallery2.apk': blob_fixup()
-        .apktool_patch('patches-gallery'),
     'odm/etc/init/init.camera_process.rc': blob_fixup()
         .regex_replace(
             '''on post-fs-data
@@ -88,8 +84,8 @@ on property:sys.camera.user.removed=*
 
 namespace_imports = [
     'vendor/oplus/camera/camera',
-    'vendor/oneplus/dodge',
-    'vendor/oneplus/sm8750-common',
+    'vendor/oneplus/infiniti',
+    'vendor/oneplus/sm8850-common',
     'hardware/oplus',
 ]
 
