@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+
+     AOSP-format replacement for the stock OOS 16.0.8 grant list
+     my_product/etc/permissions/oplus_aon_grant_permissions_list.xml (an
+     OOS-specific format LineageOS does not parse), which default-grants the
+     camera runtime permission to the AON always-on perception service.
+-->
+<exceptions>
+    <exception package="com.aiunit.aon">
+        <permission name="android.permission.CAMERA" fixed="false"/>
+    </exception>
+</exceptions>
