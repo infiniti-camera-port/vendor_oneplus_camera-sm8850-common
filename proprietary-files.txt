@@ -88,6 +88,11 @@ odm/lib64/libqsee_keybox_ca.so;DISABLE_DEPS
 odm/lib64/vendor.oplus.hardware.cryptoeng-V1-ndk.so;MODULE_SUFFIX=_odm;DISABLE_DEPS
 odm/lib64/vendor.oplus.hardware.cryptoeng@1.0.so;MODULE_SUFFIX=_odm;DISABLE_DEPS
 
+# camera: rear-bokeh AI human-seg engine + OCCE shader-cache precompiler service
+odm/bin/occe_create
+odm/etc/init/occe_create.rc
+odm/lib64/libAncHumanSegFigureFusion.so
+
 # AI Unit
 my_stock/app/AIMemory/AIMemory.apk:product/app/AIMemory/AIMemory.apk;PRESIGNED
 my_stock/app/AIMemory/lib/arm64/libaiunit_sdk_core.so:product/app/AIMemory/lib/arm64/libaiunit_sdk_core.so;MAKE_COPY_RULE_ONLY
