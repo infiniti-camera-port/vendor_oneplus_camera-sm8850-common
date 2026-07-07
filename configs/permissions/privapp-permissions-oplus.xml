@@ -26,6 +26,7 @@
         <permission name="android.permission.UPDATE_APP_OPS_STATS"/>
         <permission name="android.permission.WRITE_APN_SETTINGS"/>
         <permission name="android.permission.WRITE_SECURE_SETTINGS"/>
+        <permission name="com.oplus.permission.safe.PICTURE"/>
     </privapp-permissions>
 
     <!-- OPLUS camera -->
@@ -64,5 +65,12 @@
         <permission name="com.oppo.permission.safe.PRIVATE"/>
         <permission name="com.oppo.permission.safe.SAU"/>
         <permission name="com.oppo.permission.safe.SECURITY"/>
+    </privapp-permissions>
+    <privapp-permissions package="com.oplus.aiunit">
+        <permission name="com.oplus.permission.ai.AI_PATH_READ_WRITE"/>
+        <permission name="com.oplus.permission.safe.APP_MANAGER"/>
+        <permission name="com.oplus.permission.safe.POWER"/>
+        <permission name="com.oplus.permission.safe.SETTINGS"/>
+        <permission name="com.oppo.permission.safe.AI_APP"/>
     </privapp-permissions>
 </permissions>
