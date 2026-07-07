@@ -1,16 +1,12 @@
-# proprietary_vendor_oplus_camera
+# vendor_oneplus_camera-sm8850-common
 
-Prebuilt stock oplus Camera to include in custom ROM builds.
+SM8850 (canoe) SoC-common OnePlus camera vendor surface: glue/`.mk`/sepolicy/configs, the
+apktool fixup pipeline (`apk_fixups_*.py`, `patches*`), the regen driver
+(`extract-files.py`, `sort-blobs-list.py`), the common blob listing
+(`proprietary-files-camera-common.txt`), the `CameraThemedIcon` RRO, and (later) the port
+java source (`com.oplus.compat` / `oplus-fwk-cam`). The regenerated blob payload
+materializes here under `camera/` (gitignored).
 
-### How to use?
-
-1. Clone this repo to `vendor/oplus/camera`
-
-2. Inherit it from `device.mk` in device tree:
-
-```
-# Camera
-$(call inherit-product-if-exists, vendor/oplus/camera/opluscamera.mk)
-```
-
-3. Ensure that the PRODUCT_BRAND is either oneplus or oppo or realme and that it is not overriden by any of the safetynet hacks.
+- Build path: `vendor/oneplus/camera-sm8850-common`
+- Carved (history-preserving) from `infiniti-camera-port/vendor_oplus_camera` @ `3a76ca3` (`staging/16.0_crdroid`).
+- Inherited via `vendor/oneplus/camera-infiniti/camera-infiniti.mk` -> `camera-sm8850-common.mk`.
