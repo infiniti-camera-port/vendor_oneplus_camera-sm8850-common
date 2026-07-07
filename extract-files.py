@@ -186,6 +186,14 @@ blob_fixups = {
         .call(blob_fixup_cryptoeng_permissions_xml),
     'odm/etc/vintf/manifest/manifest_oplus_cryptoeng.xml': blob_fixup()
         .call(blob_fixup_cryptoeng_manifest),
+    'odm/lib64/libAncHumanSegFigureFusion.so': blob_fixup()
+        .clear_symbol_version('AHardwareBuffer_acquire')
+        .clear_symbol_version('AHardwareBuffer_allocate')
+        .clear_symbol_version('AHardwareBuffer_describe')
+        .clear_symbol_version('AHardwareBuffer_lock')
+        .clear_symbol_version('AHardwareBuffer_lockPlanes')
+        .clear_symbol_version('AHardwareBuffer_release')
+        .clear_symbol_version('AHardwareBuffer_unlock'),
 }  # fmt: skip
 
 namespace_imports = [

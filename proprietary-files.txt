@@ -120,6 +120,11 @@ odm/lib64/libfido2_factory.so;DISABLE_DEPS
 odm/lib64/vendor.oplus.hardware.fido.fidoca-V1-ndk.so;DISABLE_DEPS
 odm/lib64/vendor.oplus.hardware.fido.fido2ca-V1-ndk.so;DISABLE_DEPS
 
+# camera: rear-bokeh AI human-seg engine + OCCE shader-cache precompiler service
+odm/bin/occe_create
+odm/etc/init/occe_create.rc
+odm/lib64/libAncHumanSegFigureFusion.so
+
 # AI Unit
 my_stock/app/AIMemory/AIMemory.apk:product/app/AIMemory/AIMemory.apk;PRESIGNED
 my_stock/app/AIMemory/lib/arm64/libaiunit_sdk_core.so:product/app/AIMemory/lib/arm64/libaiunit_sdk_core.so;MAKE_COPY_RULE_ONLY
