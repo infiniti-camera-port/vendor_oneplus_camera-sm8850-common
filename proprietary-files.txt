@@ -1,5 +1,5 @@
-## All proprietary files from this list, unless pinned and noted otherwise,
-## are from Oneplus 13 (OxygenOS 16 CPH2653_16.0.3.501(EX01))
+## SoC-common (sm8850/canoe) camera blob listing — carved from vendor_oplus_camera @ 3a76ca3 (staging/16.0_crdroid).
+## Base donor OnePlus 15R (macan) OOS 11.A.47 per rearch-scheme-infiniti-branch-on-common.md §1; runtime-adapted across variants.
 
 # Camera
 my_product/app/OplusCamera/OplusCamera.apk:system_ext/priv-app/OplusCamera/OplusCamera.apk;OVERRIDES=Camera2,GoogleCameraGo
