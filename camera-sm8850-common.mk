@@ -4,7 +4,8 @@ PRODUCT_SOONG_NAMESPACES += \
 
 PRODUCT_PACKAGES += \
     android.hardware.graphics.common-V3-ndk.vendor \
-    CameraThemedIcon
+    CameraThemedIcon \
+    aon.frameworkres.overlay.product
 
 # Framework
 # PRODUCT_BOOT_JARS += \
@@ -29,6 +30,11 @@ PRODUCT_COPY_FILES += \
 # blob-fixup-patched out of the OEM odm extract, so it stays host_init_verifier-clean.
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/init/vendor.oplus.hardware.cryptoeng@1.0-service.rc:$(TARGET_COPY_OUT_ODM)/etc/init/vendor.oplus.hardware.cryptoeng@1.0-service.rc
+
+# AI Unit permissions
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/permissions/default-permissions-com.aiunit.aon.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions-com.aiunit.aon.xml \
+    $(LOCAL_PATH)/configs/permissions/privapp-permissions-com.oplus.stdid.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-com.oplus.stdid.xml
 
 # Properties
 # Force preview to SDR. The camera app places the preview on a BT2020_HLG

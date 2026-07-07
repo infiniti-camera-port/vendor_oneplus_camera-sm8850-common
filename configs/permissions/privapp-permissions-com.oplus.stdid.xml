@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2026 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+
+     Port of the com.oplus.stdid entry from stock OOS 16.0.8
+     system_ext/etc/permissions/privapp-permissions-oplus-common.xml.
+     Same partition as the app (system_ext) per the allowlist partition rule.
+-->
+<permissions>
+    <privapp-permissions package="com.oplus.stdid">
+        <permission name="android.permission.INTERACT_ACROSS_USERS"/>
+    </privapp-permissions>
+</permissions>
