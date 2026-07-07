@@ -24,6 +24,14 @@ from pathlib import Path
 import glob
 import re
 
+from apk_fixups_op15 import (
+    blob_fixup_apktool_unpack_full,
+    blob_fixup_cryptoeng_manifest,
+    blob_fixup_cryptoeng_permissions_xml,
+)
+from apk_fixups_camera_op15 import blob_fixup_opluscamera_component_safe_permission
+from apk_fixups_gallery_op15 import blob_fixup_oppogallery_wallpaper_attach_intent
+
 
 def lib_fixup_system_ext_suffix(lib: str, partition: str, *args, **kwargs):
     """
@@ -162,10 +170,22 @@ blob_fixups = {
     # strip undefined OEM permission gates. apktool unpack -> edit smali/manifest -> repack.
     'system_ext/priv-app/OplusCamera/OplusCamera.apk': blob_fixup()
         .call(blob_fixup_opluscamera_unpack)
+        .call(blob_fixup_opluscamera_component_safe_permission)
         .call(blob_fixup_opluscamera_font)
         .call(blob_fixup_opluscamera_strip_oem_perms)
         .apktool_pack()
         .stripzip(),
+    'system_ext/priv-app/OppoGallery2/OppoGallery2.apk': blob_fixup()
+        .call(blob_fixup_apktool_unpack_full)
+        .call(blob_fixup_oppogallery_wallpaper_attach_intent)
+        .apktool_pack()
+        .stripzip(),
+    'system_ext/etc/permissions/vendor-oplus-hardware-cryptoeng.xml': blob_fixup()
+        .call(blob_fixup_cryptoeng_permissions_xml),
+    'odm/etc/permissions/vendor-oplus-hardware-cryptoeng.xml': blob_fixup()
+        .call(blob_fixup_cryptoeng_permissions_xml),
+    'odm/etc/vintf/manifest/manifest_oplus_cryptoeng.xml': blob_fixup()
+        .call(blob_fixup_cryptoeng_manifest),
 }  # fmt: skip
 
 namespace_imports = [
