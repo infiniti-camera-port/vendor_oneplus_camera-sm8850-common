@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<!--
+  Restores Oplus gallery OLive (motion/live photo) app-feature flags dropped by
+  the LineageOS port. OppoGallery2 gates the OLive play UI (badge + long-press
+  replay) on ConfigAbility key "feature_is_support_olive", read from the Oplus
+  AppFeatureProvider (OplusAppPlatform). The whole /<part>/etc/extension app-feature
+  tree was dropped on LOS, so this (and every feature_is_support_*) defaulted false.
+  Value MUST use args="boolean:..." - AppFeatureProviderUtils parses the parameters
+  column for "boolean:<value>"; mere presence reads false.
+
+  Ingestion requires the OplusCfgFilePolicy.getCfgLevelList fix in hardware/oplus
+  (oplus-fwk) to enumerate /system_ext/etc/extension on LOS; the v3.0 bring-up had
+  stubbed it to return empty, which disabled the whole OEM app-feature scan.
+-->
+<extend_features>
+    <app_feature name="feature_is_support_olive" args="boolean:true"/>
+    <app_feature name="feature_is_support_olive_slide_play" args="boolean:true"/>
+</extend_features>
