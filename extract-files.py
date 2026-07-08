@@ -192,20 +192,21 @@ blob_fixups = {
 }  # fmt: skip
 
 namespace_imports = [
-    'vendor/oneplus/camera-sm8850-common/camera',
     'proprietary/vendor/oneplus/camera-sm8850-common',
     'vendor/oneplus/sm8850-common',
     'hardware/oplus',
 ]
 
 module = ExtractUtilsModule(
-    'camera',
-    'oneplus/camera-sm8850-common',
+    'camera-sm8850-common',
+    'oneplus',
     device_rel_path='vendor/oneplus/camera-sm8850-common',
     blob_fixups=blob_fixups,
     lib_fixups=lib_fixups,
     namespace_imports=namespace_imports,
 )
+module.vendor_rel_path = 'proprietary/vendor/oneplus/camera-sm8850-common'
+module.vendor_path = str(Path(__file__).resolve().parents[3] / module.vendor_rel_path)
 
 if __name__ == '__main__':
     utils = ExtractUtils.device(module)
