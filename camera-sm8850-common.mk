@@ -24,6 +24,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/compatconfig/oplus-gallery-receiver-compat-config.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/compatconfig/oplus-gallery-receiver-compat-config.xml \
     $(LOCAL_PATH)/configs/oplus-features/com.oplus.app-features.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/extension/com.oplus.app-features.xml \
     $(LOCAL_PATH)/configs/oplus-features/com.oplus.android-features.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/com.oplus.android-features.xml \
+    $(LOCAL_PATH)/configs/oplus-features/oplus.feature.android.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/oplus.feature.android.xml \
     $(LOCAL_PATH)/configs/init/init.oplus.camera_rus.rc:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/init/init.oplus.camera_rus.rc
 
 # cryptoeng HAL service rc: device-tree-authored (see configs/init/) instead of
