@@ -79,6 +79,10 @@ odm/firmware/secure_ta/cryptoeng.b06
 odm/firmware/secure_ta/cryptoeng.b07
 odm/firmware/secure_ta/cryptoeng.b08
 odm/firmware/secure_ta/cryptoeng.mdt
+odm/lib/lib_cryptoeng_api.so;DISABLE_DEPS
+odm/lib/libqsee_keybox_ca.so;DISABLE_DEPS
+odm/lib/vendor.oplus.hardware.cryptoeng-V1-ndk.so;MODULE_SUFFIX=_odm;DISABLE_DEPS
+odm/lib/vendor.oplus.hardware.cryptoeng@1.0.so;MODULE_SUFFIX=_odm;DISABLE_DEPS
 odm/lib64/lib_cryptoeng_api.so;DISABLE_DEPS
 odm/lib64/libqsee_keybox_ca.so;DISABLE_DEPS
 odm/lib64/vendor.oplus.hardware.cryptoeng-V1-ndk.so;MODULE_SUFFIX=_odm;DISABLE_DEPS
@@ -115,6 +119,10 @@ odm/firmware/secure_ta/fidoctap.b06
 odm/firmware/secure_ta/fidoctap.b07
 odm/firmware/secure_ta/fidoctap.b08
 odm/firmware/secure_ta/fidoctap.mdt
+odm/lib/libfido_factory.so;DISABLE_DEPS
+odm/lib/libfido2_factory.so;DISABLE_DEPS
+odm/lib/vendor.oplus.hardware.fido.fidoca-V1-ndk.so;DISABLE_DEPS
+odm/lib/vendor.oplus.hardware.fido.fido2ca-V1-ndk.so;DISABLE_DEPS
 odm/lib64/libfido_factory.so;DISABLE_DEPS
 odm/lib64/libfido2_factory.so;DISABLE_DEPS
 odm/lib64/vendor.oplus.hardware.fido.fidoca-V1-ndk.so;DISABLE_DEPS
@@ -157,4 +165,51 @@ my_stock/priv-app/AIUnit/lib/arm64/libdmabufheap.so:product/priv-app/AIUnit/lib/
 my_stock/priv-app/AIUnit/lib/arm64/libopencv_java4.so:product/priv-app/AIUnit/lib/arm64/libopencv_java4.so;MAKE_COPY_RULE_ONLY
 system_ext/priv-app/StdID/StdID.apk
 
+system_ext/priv-app/OplusAppPlatform/OplusAppPlatform.apk
+
+my_product/lib64/libApsSuperEISPreviewJni.so:system_ext/lib64/libApsSuperEISPreviewJni.so
+my_product/lib64/libMsEffectSdk.so:system_ext/lib64/libMsEffectSdk.so
+my_product/lib64/liblivephoto.frc.jni.so:system_ext/lib64/liblivephoto.frc.jni.so
+
+system/lib64/vendor.oplus.hardware.cameraextension@1.0.so
+system_ext/lib64/libbsproxy.so
+system_ext/lib64/liboplus-uah-client.so;MODULE_SUFFIX=_system_ext
+system_ext/lib64/vendor.oplus.hardware.cameraMDM@1.0.so
+
+vendor/etc/sensors/config/sns_cm.json
+vendor/etc/sensors/config/sns_mag_cal.json
+vendor/etc/sensors/config/chre_dynamic_sensors.json
+vendor/etc/sensors/config/sns_device_orient.json
+vendor/etc/sensors/config/sns_aont.json
+vendor/etc/sensors/config/sns_diag_filter.json
+vendor/etc/sensors/config/sns_dae.json
+vendor/etc/sensors/config/sns_offbody_detect_phone.json
+vendor/etc/sensors/config/sns_tilt_to_wake.json
+vendor/etc/sensors/config/sns_distance_bound.json
+vendor/etc/sensors/config/sns_rmd.json
+vendor/etc/sensors/config/sns_smd.json
+vendor/etc/sensors/config/sns_dpc.json
+vendor/etc/sensors/config/sns_direct_channel.json
+vendor/etc/sensors/config/sns_transport_ppe.json
+vendor/etc/sensors/config/sns_fmv.json
+vendor/etc/sensors/config/sns_flight_md.json
+vendor/etc/sensors/config/sns_rotv.json
+vendor/etc/sensors/config/sns_amd.json
+vendor/etc/sensors/config/sns_gyro_cal.json
+vendor/etc/sensors/config/sns_pedometer.json
+vendor/etc/sensors/config/sns_tilt.json
+odm/etc/camera/license_release_fdc.lic
+odm/etc/camera/livephoto_coverenhancer/models/license_release_gallery.lic
+system/app/ExtensionsService/ExtensionsService.apk
+system/etc/permissions/privapp-permissions-oplus.xml
+
+my_product/etc/camera/cdr_aging_set.json:product/etc/camera/cdr_aging_set.json
+my_product/etc/camera/engineer_camera_config.json:product/etc/camera/engineer_camera_config.json
+system_ext/lib64/liboplushwui_jni.so
+
+system_ext/lib64/libcsextimpl.so
+
 # Oplus Camera Services & AI (OSense)
+# OEM camera HAL layer selected by ro.hardware.camera=oemlayer.v2.
+# Keep common so all sm8850 variants ship the same runtime camera module.
+odm/lib64/hw/camera.oemlayer.v2.so;DISABLE_CHECKELF;DISABLE_DEPS
