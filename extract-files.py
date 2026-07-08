@@ -193,7 +193,7 @@ blob_fixups = {
 
 namespace_imports = [
     'vendor/oneplus/camera-sm8850-common/camera',
-    'vendor/oneplus/infiniti',
+    'proprietary/vendor/oneplus/camera-sm8850-common',
     'vendor/oneplus/sm8850-common',
     'hardware/oplus',
 ]
