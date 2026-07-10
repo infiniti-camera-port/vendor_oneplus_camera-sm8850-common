@@ -12,3 +12,7 @@ allow cameraserver opluscamera_app:process setsched;
 # is absent on our build); silence the benign denial with dontaudit rather than
 # granting a coredomain access to a vendor property type.
 dontaudit cameraserver vendor_default_prop:file { read getattr map open };
+
+# The setsched target (opluscamera_app) carries app MCS categories, so the
+# process-setsched MLS rule also requires cameraserver to be trusted for it.
+typeattribute cameraserver mlstrustedsubject;
