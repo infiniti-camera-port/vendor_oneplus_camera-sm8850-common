@@ -29,7 +29,11 @@ from apk_fixups_op15 import (
     blob_fixup_cryptoeng_manifest,
     blob_fixup_cryptoeng_permissions_xml,
 )
-from apk_fixups_camera_op15 import blob_fixup_opluscamera_component_safe_permission
+from apk_fixups_camera_op15 import (
+    blob_fixup_aiunit_settings_category,
+    blob_fixup_aonservice_settings_category,
+    blob_fixup_opluscamera_component_safe_permission,
+)
 from apk_fixups_gallery_op15 import (
     blob_fixup_oppogallery_system_share_helper,
     blob_fixup_oppogallery_wallpaper_attach_intent,
@@ -70,6 +74,15 @@ def blob_fixup_opluscamera_unpack(ctx, file, file_path, *args, tmp_dir=None, **k
     if tmp_dir is None:
         return
     run_cmd([java_path, '-Xmx8g', '-jar', apktool_path, 'd', file_path, '-o', tmp_dir, '-f'])
+
+
+def blob_fixup_apk_unpack_nosmali(ctx, file, file_path, *args, tmp_dir=None, **kwargs):
+    # Resource+manifest decode only (-s keeps the original classes.dex), so large
+    # apks (AIUnit) are byte-preserved apart from a manifest edit — no smali
+    # roundtrip. apktool_pack() reads apktool.yml and rebuilds with the kept dex.
+    if tmp_dir is None:
+        return
+    run_cmd([java_path, '-Xmx8g', '-jar', apktool_path, 'd', '-s', file_path, '-o', tmp_dir, '-f'])
 
 
 def blob_fixup_opluscamera_font(ctx, file, file_path, *args, tmp_dir=None, **kwargs):
@@ -182,6 +195,21 @@ blob_fixups = {
         .call(blob_fixup_apktool_unpack_full)
         .call(blob_fixup_oppogallery_wallpaper_attach_intent)
         .call(blob_fixup_oppogallery_system_share_helper)
+        .apktool_pack()
+        .stripzip(),
+    # AON "EZ Pay" + AIUnit "AI Service Engine" Settings tiles: fix the malformed
+    # com.android.settings.category so they land under More security and privacy
+    # instead of leaking onto every Settings subpage. Manifest-only edit (no smali
+    # roundtrip); these apks are platform-resigned (see Android.bp) so the fixed
+    # manifest is signed with the platform key and matches OplusPermissionDefiner.
+    'product/app/AONService/AONService.apk': blob_fixup()
+        .call(blob_fixup_apk_unpack_nosmali)
+        .call(blob_fixup_aonservice_settings_category)
+        .apktool_pack()
+        .stripzip(),
+    'product/priv-app/AIUnit/AIUnit.apk': blob_fixup()
+        .call(blob_fixup_apk_unpack_nosmali)
+        .call(blob_fixup_aiunit_settings_category)
         .apktool_pack()
         .stripzip(),
     'system_ext/etc/permissions/vendor-oplus-hardware-cryptoeng.xml': blob_fixup()
