@@ -1,4 +1,9 @@
 # Gallery AI editor initializes stock Qualcomm/Oplus DSP models through FastRPC.
+# vendor_qdsp_device: read/ioctl only — the qcom sm8850 neverallow
+# (device/qcom/sepolicy_vndr/.../domain.te) blocks open/write on it for non-HAL
+# app domains, so dontaudit the open instead of allowing it (same pattern as
+# opluscamera_app). The actual DSP session open goes through the HAL.
 dontaudit platform_app adsprpcd_file:file read;
-allow platform_app vendor_qdsp_device:chr_file { ioctl open read };
+allow platform_app vendor_qdsp_device:chr_file { ioctl read };
+dontaudit platform_app vendor_qdsp_device:chr_file open;
 allow platform_app vendor_file:dir watch;
