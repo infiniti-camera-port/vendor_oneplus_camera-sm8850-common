@@ -1,0 +1,4 @@
+# Gallery AI editor initializes stock Qualcomm/Oplus DSP models through FastRPC.
+dontaudit platform_app adsprpcd_file:file read;
+allow platform_app vendor_qdsp_device:chr_file { ioctl open read };
+allow platform_app vendor_file:dir watch;
