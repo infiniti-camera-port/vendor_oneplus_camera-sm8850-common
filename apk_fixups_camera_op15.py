@@ -3,6 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 
 
+class CameraFixupError(RuntimeError):
+    pass
+
+
 def _manifest(tmp_dir: str) -> Path:
     return Path(tmp_dir) / 'AndroidManifest.xml'
 
@@ -22,6 +26,44 @@ def _add_permissions(tmp_dir: str, permissions: tuple[str, ...]) -> None:
 def blob_fixup_opluscamera_component_safe_permission(ctx, file, file_path, *args, tmp_dir=None, **kwargs):
     if tmp_dir is not None:
         _add_permissions(tmp_dir, ('oppo.permission.OPPO_COMPONENT_SAFE',))
+
+
+def blob_fixup_opluscamera_heic_quick_flag(ctx, file, file_path, *args, tmp_dir=None, **kwargs):
+    if tmp_dir is None:
+        return
+
+    matches = list(Path(tmp_dir).glob('smali*/xj/k.smali'))
+    if len(matches) != 1:
+        raise CameraFixupError('OplusCamera HEIC quick-flag class not found exactly once')
+
+    smali = matches[0]
+    data = smali.read_text(encoding='utf-8')
+    signature = '.method public static d(Lnc/h1;Ljava/util/Map;Ljava/lang/String;Ljava/io/File;)V'
+    start = data.find(signature)
+    end = data.find('.end method', start)
+    if start < 0 or end < 0:
+        raise CameraFixupError('OplusCamera HEIC quick-flag method not found')
+
+    method = data[start:end]
+    replacements = (
+        (
+            'invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I',
+            'invoke-static {v5}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J',
+        ),
+        ('move-result v5\n    :try_end_', 'move-result-wide v5\n    :try_end_'),
+        ('const v7, -0x10000001', 'const-wide/32 v7, -0x10000001'),
+        ('and-int/2addr v5, v7', 'and-long/2addr v5, v7'),
+        (
+            'invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;',
+            'invoke-virtual {v7, v5, v6}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;',
+        ),
+    )
+    for old, new in replacements:
+        if method.count(old) != 1:
+            raise CameraFixupError(f'OplusCamera HEIC quick-flag patch point mismatch: {old}')
+        method = method.replace(old, new, 1)
+
+    smali.write_text(data[:start] + method + data[end:], encoding='utf-8')
 
 
 # AOSP Settings category that lands a MANUFACTURER tile under

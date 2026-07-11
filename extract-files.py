@@ -33,6 +33,7 @@ from apk_fixups_camera_op15 import (
     blob_fixup_aiunit_settings_category,
     blob_fixup_aonservice_settings_category,
     blob_fixup_opluscamera_component_safe_permission,
+    blob_fixup_opluscamera_heic_quick_flag,
 )
 from apk_fixups_gallery_op15 import (
     blob_fixup_oppogallery_system_share_helper,
@@ -187,6 +188,7 @@ blob_fixups = {
     'system_ext/priv-app/OplusCamera/OplusCamera.apk': blob_fixup()
         .call(blob_fixup_opluscamera_unpack)
         .call(blob_fixup_opluscamera_component_safe_permission)
+        .call(blob_fixup_opluscamera_heic_quick_flag)
         .call(blob_fixup_opluscamera_font)
         .call(blob_fixup_opluscamera_strip_oem_perms)
         .apktool_pack()
