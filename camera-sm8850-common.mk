@@ -7,6 +7,18 @@ PRODUCT_PACKAGES += \
     CameraThemedIcon \
     aon.frameworkres.overlay.product
 
+# Deobfuscating libalogencrypt shim: a plaintext pass-through libalogencrypt.so
+# so the arcsoft APS logger (odm/lib64/libalog.so) dlopen+dlsym alog_encrypt
+# succeeds, its flush thread drains, and APS/arcsoft logs are written in
+# plaintext (readable). Log-hygiene + debuggability; installs to /odm/lib64.
+# See libalogencrypt/. Toggle: set to false to ship neither the shim nor the
+# readable logs.
+OPLUS_ALOG_DEOBFUSCATE_SHIM ?= true
+ifeq ($(OPLUS_ALOG_DEOBFUSCATE_SHIM),true)
+PRODUCT_PACKAGES += \
+    libalogencrypt
+endif
+
 # Framework
 # PRODUCT_BOOT_JARS += \
 #    oplus-framework
