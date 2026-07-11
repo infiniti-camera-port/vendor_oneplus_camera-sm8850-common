@@ -1,0 +1,37 @@
+//
+// Copyright (C) 2026 The LineageOS Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+// Plaintext pass-through shim standing in for the proprietary OEM
+// libalogencrypt.so. The arcsoft APS logger (/odm/lib64/libalog.so) lazily
+// dlopen()s libalogencrypt.so and dlsym()s alog_encrypt() to obfuscate its log
+// buffers before flushing them. That OEM blob is absent on this build, so the
+// dlopen fails, libalogs flush thread stalls with an ever-growing pending
+// queue (APS_ALOG flushRoutine backlog), and the log spam floods. This shim
+// exports alog_encrypt() (_Z12alog_encryptPhi) as a no-op so libalogs
+// dlopen/dlsym succeed and its flush queue drains; buffers are left untouched,
+// so the APS/arcsoft logs are written in PLAINTEXT (de-obfuscated / readable).
+//
+// This is a 64-bit-only native target (TARGET_ARCH=arm64, no TARGET_2ND_ARCH),
+// and libalog is loaded by 64-bit camera processes, so build/install lib64 only
+// -> /odm/lib64/libalogencrypt.so (device_specific -> TARGET_COPY_OUT_ODM).
+cc_library_shared {
+    name: "libalogencrypt",
+    srcs: ["alogencrypt.cpp"],
+    device_specific: true,
+    compile_multilib: "64",
+    stl: "none",
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-fvisibility=hidden",
+    ],
+    strip: {
+        all: true,
+    },
+    sanitize: {
+        never: true,
+    },
+}
