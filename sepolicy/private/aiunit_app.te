@@ -1,0 +1,5 @@
+allow aiunit_app aiunit_app_data_file:dir create_dir_perms;
+allow aiunit_app aiunit_app_data_file:file create_file_perms;
+allow aiunit_app aiunit_app_data_file:{ lnk_file sock_file fifo_file } create_file_perms;
+
+binder_use(aiunit_app)

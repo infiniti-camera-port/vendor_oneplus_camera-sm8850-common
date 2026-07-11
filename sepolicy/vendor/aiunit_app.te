@@ -1,0 +1,23 @@
+app_domain(aiunit_app)
+net_domain(aiunit_app)
+
+allow aiunit_app aiunit_app_data_file:file { execute execmod };
+allow aiunit_app self:process execmem;
+
+allow aiunit_app adsprpcd_file:file { getattr open read map };
+allow aiunit_app vendor_qdsp_device:chr_file { ioctl read };
+dontaudit aiunit_app vendor_qdsp_device:chr_file open;
+
+allow aiunit_app vendor_hal_unsignedhexlp_service:service_manager find;
+allow aiunit_app vendor_hal_cryptoeng_oplus_service:service_manager find;
+allow aiunit_app vendor_hal_cryptoeng_oplus:binder { call transfer };
+allow aiunit_app default_android_service:service_manager find;
+
+allow aiunit_app cgroup_v2:dir search;
+allow aiunit_app selinuxfs:file { open read };
+allow aiunit_app same_process_hal_file:file { execute read open getattr map };
+
+get_prop(aiunit_app, aac_drc_prop)
+get_prop(aiunit_app, ab_update_gki_prop)
+get_prop(aiunit_app, adaptive_haptics_prop)
+dontaudit aiunit_app vendor_default_prop:file { getattr map open read };
