@@ -3,7 +3,6 @@
 # (device/qcom/sepolicy_vndr/.../domain.te) blocks open/write on it for non-HAL
 # app domains, so dontaudit the open instead of allowing it (same pattern as
 # opluscamera_app). The actual DSP session open goes through the HAL.
-allow platform_app adsprpcd_file:file { getattr open read map };
 allow platform_app vendor_qdsp_device:chr_file { ioctl read };
 dontaudit platform_app vendor_qdsp_device:chr_file open;
 allow platform_app vendor_file:dir watch;
