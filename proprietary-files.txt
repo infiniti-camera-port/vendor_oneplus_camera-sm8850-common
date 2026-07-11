@@ -51,6 +51,7 @@ my_product/lib64/libst_sticker_jni.so:system_ext/lib64/libst_sticker_jni.so;FIX_
 my_product/lib64/libHdrTransform-platform-jni.so:system_ext/lib64/libHdrTransform-platform-jni.so
 
 odm/lib64/libOplusSecurity.so
+odm/lib64/liboplus_cfbt.so;DISABLE_CHECKELF
 
 my_product/lib64/libAPSClient-alog-jni.so:system_ext/lib64/libAPSClient-alog-jni.so
 my_product/product_overlay/etc/permissions/oplus_camera_default_grant_permissions_list.xml:system_ext/etc/default-permissions/oplus_camera_default_grant_permissions_list.xml
