@@ -28,6 +28,39 @@ def blob_fixup_opluscamera_component_safe_permission(ctx, file, file_path, *args
         _add_permissions(tmp_dir, ('oppo.permission.OPPO_COMPONENT_SAFE',))
 
 
+# Compat shim for the OplusCamera xj.k.d HEIC "quick flag" that is masked and
+# written into the EXIF UserComment. The stock code parses it with
+# Integer.parseInt, so a flag value that overflows a signed 32-bit int throws
+# (the surrounding catch then drops the write). Widening the value to a long
+# fixes that, but doing it in place inside xj.k.d requires wide register pairs,
+# and reusing v5/v7 there silently clobbered the live single-word registers v6
+# and v8 (v8 holds File.separator, read later as an object) -> the ART verifier
+# rejected the class ("copy-reference vN<-v8 type=High-half Constant") and the
+# camera crashed on every launch. Instead, keep xj.k.d untouched register-wise
+# and route the parse+mask through this helper, which does the 64-bit work and
+# returns the decimal string. A malformed input still throws
+# NumberFormatException, which xj.k.d's existing try/catch already handles.
+_QUICKFLAG_SHIM_CLASS = 'org/lineageos/opluscompat/QuickFlag'
+
+_QUICKFLAG_SHIM_SMALI = '''.class public final Lorg/lineageos/opluscompat/QuickFlag;
+.super Ljava/lang/Object;
+.source "QuickFlag.java"
+
+
+# See blob_fixup_opluscamera_heic_quick_flag in apk_fixups_camera_op15.py.
+.method public static mask(Ljava/lang/String;)Ljava/lang/String;
+    .registers 5
+    invoke-static {p0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
+    move-result-wide v0
+    const-wide/32 v2, -0x10000001
+    and-long/2addr v0, v2
+    invoke-static {v0, v1}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
+    move-result-object v0
+    return-object v0
+.end method
+'''
+
+
 def blob_fixup_opluscamera_heic_quick_flag(ctx, file, file_path, *args, tmp_dir=None, **kwargs):
     if tmp_dir is None:
         return
@@ -45,17 +78,25 @@ def blob_fixup_opluscamera_heic_quick_flag(ctx, file, file_path, *args, tmp_dir=
         raise CameraFixupError('OplusCamera HEIC quick-flag method not found')
 
     method = data[start:end]
+    # Route the parse+mask+append through the shim, keeping v5 an object
+    # reference throughout. No wide register pairs are introduced in xj.k.d, so
+    # no live single-word register (v6/v8) is clobbered.
     replacements = (
+        # Integer.parseInt(String)I -> QuickFlag.mask(String)String
         (
             'invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I',
-            'invoke-static {v5}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J',
+            'invoke-static {v5}, L' + _QUICKFLAG_SHIM_CLASS
+            + ';->mask(Ljava/lang/String;)Ljava/lang/String;',
         ),
-        ('move-result v5\n    :try_end_', 'move-result-wide v5\n    :try_end_'),
-        ('const v7, -0x10000001', 'const-wide/32 v7, -0x10000001'),
-        ('and-int/2addr v5, v7', 'and-long/2addr v5, v7'),
+        # result is now a String, not an int
+        ('move-result v5\n    :try_end_', 'move-result-object v5\n    :try_end_'),
+        # masking moved into the shim; drop the in-method 32-bit mask
+        ('const v7, -0x10000001', ''),
+        ('and-int/2addr v5, v7', ''),
+        # append the masked decimal string instead of an int
         (
             'invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;',
-            'invoke-virtual {v7, v5, v6}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;',
+            'invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;',
         ),
     )
     for old, new in replacements:
@@ -64,6 +105,12 @@ def blob_fixup_opluscamera_heic_quick_flag(ctx, file, file_path, *args, tmp_dir=
         method = method.replace(old, new, 1)
 
     smali.write_text(data[:start] + method + data[end:], encoding='utf-8')
+
+    # Inject the shim class alongside xj/k.smali so it compiles into the same
+    # dex (classes20, ~8k method refs -> ample headroom under the 64k limit).
+    shim = smali.parent.parent / 'org' / 'lineageos' / 'opluscompat' / 'QuickFlag.smali'
+    shim.parent.mkdir(parents=True, exist_ok=True)
+    shim.write_text(_QUICKFLAG_SHIM_SMALI, encoding='utf-8')
 
 
 # AOSP Settings category that lands a MANUFACTURER tile under

@@ -54,6 +54,10 @@ allow opluscamera_app permission_service:service_manager find;
 allow opluscamera_app vendor_hal_offlinecamera_service:service_manager find;
 dontaudit opluscamera_app vendor_hal_qspmhal_service:service_manager find;
 
+# Unsigned Hexagon low-power (HEXLP) DSP service: the camera app looks it up for
+# on-device DSP session setup, same as aiunit_app. Grant the client half.
+hal_client_domain(opluscamera_app, vendor_hal_unsignedhexlp)
+
 
 # Allow binder communication with QSPM HAL
 allow opluscamera_app vendor_hal_qspmhal_default:binder { call transfer };
