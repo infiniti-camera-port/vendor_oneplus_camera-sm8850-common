@@ -176,8 +176,15 @@ lib_fixups: lib_fixups_user_type = {
     (
         'libatlasservice',
         'libimmlistservice',
+        'liboplusHeifDecoderImpl',
         'liboplus_imageprocessing',
         'liboplusmmdebug',
+    ): lib_fixup_remove,
+    # libft2 (freetype) is a defined module but restricts its visibility, so a
+    # prebuilt here cannot depend on it. The prebuilt .so resolves libft2 against
+    # the platform copy at runtime, so drop it from the generated shared_libs.
+    (
+        'libft2',
     ): lib_fixup_remove,
 }
 
