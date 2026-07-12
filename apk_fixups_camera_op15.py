@@ -29,17 +29,17 @@ def blob_fixup_opluscamera_component_safe_permission(ctx, file, file_path, *args
 
 
 # Compat shim for the OplusCamera xj.k.d HEIC "quick flag" that is masked and
-# written into the EXIF UserComment. The stock code parses it with
-# Integer.parseInt, so a flag value that overflows a signed 32-bit int throws
-# (the surrounding catch then drops the write). Widening the value to a long
-# fixes that, but doing it in place inside xj.k.d requires wide register pairs,
-# and reusing v5/v7 there silently clobbered the live single-word registers v6
-# and v8 (v8 holds File.separator, read later as an object) -> the ART verifier
-# rejected the class ("copy-reference vN<-v8 type=High-half Constant") and the
-# camera crashed on every launch. Instead, keep xj.k.d untouched register-wise
-# and route the parse+mask through this helper, which does the 64-bit work and
-# returns the decimal string. A malformed input still throws
-# NumberFormatException, which xj.k.d's existing try/catch already handles.
+# written into the EXIF UserComment. The stock code is:
+#     Integer.parseInt(s) & 0xEFFFFFFF  -> appended as an int
+# so a value that overflows a signed 32-bit int makes parseInt throw and the
+# surrounding catch drops the write. Route the parse+mask through this helper,
+# which parses as a long (never throws on large input), applies the mask, and
+# narrows back to int. Crucially the result stays an int, so xj.k.d's register
+# v5 keeps the exact type it has in stock: the method reuses v5 as an int later
+# on, so returning anything else (e.g. a String) makes the verifier reject the
+# class ("register v5 has type Reference but expected Integer"). No wide register
+# pairs are introduced in xj.k.d either, so the live single-word registers v6/v8
+# are untouched (that in-place-widening clobber was the original crash).
 _QUICKFLAG_SHIM_CLASS = 'org/lineageos/opluscompat/QuickFlag'
 
 _QUICKFLAG_SHIM_SMALI = '''.class public final Lorg/lineageos/opluscompat/QuickFlag;
@@ -48,15 +48,14 @@ _QUICKFLAG_SHIM_SMALI = '''.class public final Lorg/lineageos/opluscompat/QuickF
 
 
 # See blob_fixup_opluscamera_heic_quick_flag in apk_fixups_camera_op15.py.
-.method public static mask(Ljava/lang/String;)Ljava/lang/String;
+.method public static maskInt(Ljava/lang/String;)I
     .registers 5
     invoke-static {p0}, Ljava/lang/Long;->parseLong(Ljava/lang/String;)J
     move-result-wide v0
     const-wide/32 v2, -0x10000001
     and-long/2addr v0, v2
-    invoke-static {v0, v1}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
-    move-result-object v0
-    return-object v0
+    long-to-int v0, v0
+    return v0
 .end method
 '''
 
@@ -78,26 +77,19 @@ def blob_fixup_opluscamera_heic_quick_flag(ctx, file, file_path, *args, tmp_dir=
         raise CameraFixupError('OplusCamera HEIC quick-flag method not found')
 
     method = data[start:end]
-    # Route the parse+mask+append through the shim, keeping v5 an object
-    # reference throughout. No wide register pairs are introduced in xj.k.d, so
-    # no live single-word register (v6/v8) is clobbered.
+    # Route parse+mask through the shim but keep v5 an int (move-result and the
+    # later append(I) are unchanged), so v5's type is identical to stock and no
+    # wide register pair is introduced in xj.k.d.
     replacements = (
-        # Integer.parseInt(String)I -> QuickFlag.mask(String)String
+        # Integer.parseInt(String)I -> QuickFlag.maskInt(String)I (still an int)
         (
             'invoke-static {v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I',
             'invoke-static {v5}, L' + _QUICKFLAG_SHIM_CLASS
-            + ';->mask(Ljava/lang/String;)Ljava/lang/String;',
+            + ';->maskInt(Ljava/lang/String;)I',
         ),
-        # result is now a String, not an int
-        ('move-result v5\n    :try_end_', 'move-result-object v5\n    :try_end_'),
-        # masking moved into the shim; drop the in-method 32-bit mask
+        # masking now happens inside the shim; drop the in-method 32-bit mask
         ('const v7, -0x10000001', ''),
         ('and-int/2addr v5, v7', ''),
-        # append the masked decimal string instead of an int
-        (
-            'invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;',
-            'invoke-virtual {v7, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;',
-        ),
     )
     for old, new in replacements:
         if method.count(old) != 1:
