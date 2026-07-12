@@ -168,21 +168,11 @@ lib_fixups: lib_fixups_user_type = {
         'libmpbase',
         'libextendfile',
     ): lib_fixup_system_ext_suffix,
-    # DT_NEEDED OEM libs that are not packaged as their own soong modules (they
-    # live in other vendor images we don't own). Drop them from the generated
-    # shared_libs so the prebuilt modules don't reference undefined modules.
-    # Without this, extract-files emits e.g. libskjpegencoderextimpl -> these,
-    # and `m nothing` fails with "depends on undefined module".
-    (
-        'libatlasservice',
-        'libimmlistservice',
-        'liboplusHeifDecoderImpl',
-        'liboplus_imageprocessing',
-        'liboplusmmdebug',
-    ): lib_fixup_remove,
     # libft2 (freetype) is a defined module but restricts its visibility, so a
     # prebuilt here cannot depend on it. The prebuilt .so resolves libft2 against
-    # the platform copy at runtime, so drop it from the generated shared_libs.
+    # the platform copy on the device at runtime, so drop it from the generated
+    # shared_libs. (The OEM libs it used to sit next to are now shipped via
+    # proprietary-files.txt, so they no longer need dropping.)
     (
         'libft2',
     ): lib_fixup_remove,
