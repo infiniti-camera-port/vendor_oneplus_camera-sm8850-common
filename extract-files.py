@@ -36,7 +36,6 @@ from apk_fixups_camera_op15 import (
     blob_fixup_opluscamera_heic_quick_flag,
 )
 from apk_fixups_gallery_op15 import (
-    blob_fixup_oppogallery_system_share_helper,
     blob_fixup_oppogallery_wallpaper_attach_intent,
 )
 
@@ -196,7 +195,6 @@ blob_fixups = {
     'system_ext/priv-app/OppoGallery2/OppoGallery2.apk': blob_fixup()
         .call(blob_fixup_apktool_unpack_full)
         .call(blob_fixup_oppogallery_wallpaper_attach_intent)
-        .call(blob_fixup_oppogallery_system_share_helper)
         .apktool_pack()
         .stripzip(),
     # AON "EZ Pay" + AIUnit "AI Service Engine" Settings tiles: fix the malformed
