@@ -1,0 +1,36 @@
+# Gallery AI editor initializes stock Qualcomm/Oplus DSP models through FastRPC.
+# vendor_qdsp_device: read/ioctl only — the qcom sm8850 neverallow
+# (device/qcom/sepolicy_vndr/.../domain.te) blocks open/write on it for non-HAL
+# app domains, so dontaudit the open instead of allowing it (same pattern as
+# opluscamera_app). The actual DSP session open goes through the HAL.
+allow platform_app adsprpcd_file:file { getattr open read map };
+allow platform_app vendor_qdsp_device:chr_file { ioctl read };
+dontaudit platform_app vendor_qdsp_device:chr_file open;
+allow platform_app vendor_file:dir watch;
+
+# AI editor (AI Eraser): AIUnit runs in the platform_app domain after the
+# platform-resign, and dlopen+executes downloaded Hexagon NPU model engine/plugin
+# .so libs from its data dir, discovers the unsigned-PD hexlp NPU + cryptoeng
+# attestation services, and loads the remapped stock libui-stock.so. Captured in
+# permissive; AI Eraser works once these are granted.
+#
+# A dedicated aiunit_app seapp domain would scope these to AIUnit rather than
+# all platform apps, but do NOT reintroduce one without verifying the process
+# actually lands in it. That was tried and it regressed AIUnit: the seapp entry
+# relabelled /data/data/com.oplus.aiunit to aiunit_app_data_file with
+# levelFrom=all (s0:c17,c257,c512,c768) while the process kept platform_app with
+# levelFrom=user (s0:c512,c768), so AIUnit was denied its own databases, cache
+# and oat_primary, and these grants sat on a domain nothing executed in. Confirm
+# with `ps -AZ | grep aiunit` before moving any rule out of platform_app.
+allow platform_app vendor_hal_unsignedhexlp_service:service_manager find;
+allow platform_app vendor_hal_cryptoeng_oplus_service:service_manager find;
+allow platform_app vendor_hal_cryptoeng_oplus:binder { call transfer };
+allow platform_app default_android_service:service_manager find;
+allow platform_app app_data_file:file execute;
+allow platform_app cgroup_v2:dir search;
+allow platform_app selinuxfs:file { open read };
+allow platform_app same_process_hal_file:file { execute read open getattr map };
+get_prop(platform_app, aac_drc_prop)
+get_prop(platform_app, ab_update_gki_prop)
+get_prop(platform_app, adaptive_haptics_prop)
+dontaudit platform_app vendor_default_prop:file { getattr map open read };

@@ -32,3 +32,8 @@ binder_call(vendor_hal_cryptoeng_oplus, vendor_hal_fido2_oplus)
 # firmware_file read + rpmb_status/.lii keybox-store /data rules are deferred to
 # an audit pass — the OEM service/data types are not hosted here and the chain
 # dead-ends at the TA (10048) on an unlocked bootloader. Do NOT use permissive.
+
+# cryptoeng attests the calling app (AIUnit, now platform_app) by reading its
+# /proc/PID/cmdline during the attestation handshake.
+allow vendor_hal_cryptoeng_oplus platform_app:dir search;
+allow vendor_hal_cryptoeng_oplus platform_app:file { getattr open read };

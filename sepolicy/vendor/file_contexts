@@ -5,6 +5,8 @@
 /(vendor|odm)/lib(64)?/cache\.so    u:object_r:same_process_hal_file:s0
 /(vendor|odm)/lib(64)?/libnn\.so    u:object_r:same_process_hal_file:s0
 /(vendor|odm)/lib(64)?/libui\.so    u:object_r:same_process_hal_file:s0
+/(vendor|odm)/lib(64)?/libutils-stock\.so    u:object_r:same_process_hal_file:s0
+/(vendor|odm)/lib(64)?/libui-stock\.so    u:object_r:same_process_hal_file:s0
 /(vendor|odm)/lib(64)?/libion\.so    u:object_r:same_process_hal_file:s0
 /(vendor|odm)/lib(64)?/libEIS\.so    u:object_r:same_process_hal_file:s0
 /(vendor|odm)/lib(64)?/libfuai\.so    u:object_r:same_process_hal_file:s0
@@ -541,6 +543,7 @@
 # This is labeled as public_adsprpcd_file as it needs to be read by apps
 # (e.g. Google Camera App)
 /mnt/vendor/dsp/fastrpc_shell_3                                              u:object_r:public_adsprpcd_file:s0
+/vendor/dsp/cdsp/fastrpc_shell_unsigned_3                                    u:object_r:same_process_hal_file:s0
 
 # --- OOS-parity: label OEM-shipped camera/algo/QNN(v81) odm/vendor libs same_process_hal_file.
 # These blobs ship on the device but our (OP13-vintage) list left them at the vendor_file default,

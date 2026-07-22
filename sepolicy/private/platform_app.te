@@ -1,0 +1,3 @@
+# Gallery/editor stock code checks Oplus touch/display properties while setting
+# up AI editor/HDR pipelines.
+get_prop(platform_app, system_oplus_touch_prop)

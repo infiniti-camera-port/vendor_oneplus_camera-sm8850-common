@@ -11,3 +11,5 @@ allow hal_camera_default proc:file { write open getattr };
 
 # Binder: HAL ↔ camera app
 allow hal_camera_default opluscamera_app:binder { call transfer };
+
+dontaudit hal_camera_default default_prop:file { open read getattr map };
