@@ -6,6 +6,7 @@
 #
 
 from extract_utils.fixups_lib import (
+    lib_fixup_remove,
     lib_fixups,
     lib_fixups_user_type,
 )
@@ -174,6 +175,14 @@ lib_fixups: lib_fixups_user_type = {
         'libmpbase',
         'libextendfile',
     ): lib_fixup_system_ext_suffix,
+    # libft2 (freetype) is a defined module but restricts its visibility, so a
+    # prebuilt here cannot depend on it. The prebuilt .so resolves libft2 against
+    # the platform copy on the device at runtime, so drop it from the generated
+    # shared_libs. (The OEM libs it used to sit next to are now shipped via
+    # proprietary-files.txt, so they no longer need dropping.)
+    (
+        'libft2',
+    ): lib_fixup_remove,
 }
 
 blob_fixups = {

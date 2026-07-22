@@ -51,6 +51,7 @@ my_product/lib64/libst_sticker_jni.so:system_ext/lib64/libst_sticker_jni.so;FIX_
 my_product/lib64/libHdrTransform-platform-jni.so:system_ext/lib64/libHdrTransform-platform-jni.so
 
 odm/lib64/libOplusSecurity.so
+odm/lib64/liboplus_cfbt.so;DISABLE_CHECKELF
 
 my_product/lib64/libAPSClient-alog-jni.so:system_ext/lib64/libAPSClient-alog-jni.so
 my_product/product_overlay/etc/permissions/oplus_camera_default_grant_permissions_list.xml:system_ext/etc/default-permissions/oplus_camera_default_grant_permissions_list.xml
@@ -60,7 +61,30 @@ system_ext/lib64/libpenguin.so:vendor/lib64/libpenguin.so
 system_ext/lib64/libHeifEncoderWrapper.so
 system_ext/lib64/libHeifWinBufExchg-jni.so;DISABLE_CHECKELF
 system_ext/lib64/libNativeWinBuffExchange.so
+system_ext/lib64/libhwuiextimpl.so;DISABLE_CHECKELF
+system_ext/lib64/libjpegdecoder_ext.so;DISABLE_CHECKELF
+system_ext/lib64/libjpegencoder_ext.so;DISABLE_CHECKELF
+system_ext/lib64/liboplus_10bitHeif.so;DISABLE_CHECKELF
 system_ext/lib64/liboplusheifwriter.so
+system_ext/lib64/libskjpegencoderextimpl.so;DISABLE_CHECKELF
+# DT_NEEDED closure of liboplus_10bitHeif + libskjpegencoderextimpl. These OEM
+# libs were never extracted, so those two libraries could not dlopen on-device
+# (10-bit HEIF decode + Skia JPEG-encoder extension were dead). Ship the whole
+# subtree. DISABLE_DEPS so their own (on-device) DT_NEEDED are resolved by the
+# runtime linker instead of being wired as soong modules we don't own.
+system/lib64/liboplusmmdebug.so;DISABLE_DEPS;DISABLE_CHECKELF
+system_ext/lib64/libatlasservice.so;DISABLE_DEPS;DISABLE_CHECKELF
+system_ext/lib64/libiatlasservice.so;DISABLE_DEPS;DISABLE_CHECKELF
+system_ext/lib64/libimmlistservice.so;DISABLE_DEPS;DISABLE_CHECKELF
+system_ext/lib64/libmmlistparser.so;DISABLE_DEPS;DISABLE_CHECKELF
+system_ext/lib64/libolc.so;DISABLE_DEPS;DISABLE_CHECKELF
+system_ext/lib64/liboplusHeifDecoderImpl.so;DISABLE_DEPS;DISABLE_CHECKELF
+system_ext/lib64/liboplus_imageprocessing.so;DISABLE_DEPS;DISABLE_CHECKELF
+system_ext/lib64/liboplus_multimedia_kernel_event.so;DISABLE_DEPS;DISABLE_CHECKELF
+system_ext/lib64/libopluscfgpolicy.so;DISABLE_DEPS;DISABLE_CHECKELF
+# HEIF->JPEG decode/convert + HEIC render backend, the native lib behind
+# com.oplus.media.OplusHeifConverter (hardware/oplus oplus-fwk bridge).
+system_ext/lib64/liboplus_heifconverter.so;DISABLE_DEPS;DISABLE_CHECKELF
 system_ext/etc/permissions/vendor-oplus-hardware-cryptoeng.xml
 system_ext/framework/vendor.oplus.hardware.cryptoeng-V1-java.jar
 system_ext/framework/vendor.oplus.hardware.cryptoeng-V1.0-java.jar
