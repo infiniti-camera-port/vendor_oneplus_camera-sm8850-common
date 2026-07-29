@@ -226,8 +226,6 @@ vendor/etc/sensors/config/sns_amd.json
 vendor/etc/sensors/config/sns_gyro_cal.json
 vendor/etc/sensors/config/sns_pedometer.json
 vendor/etc/sensors/config/sns_tilt.json
-odm/etc/camera/license_release_fdc.lic
-odm/etc/camera/livephoto_coverenhancer/models/license_release_gallery.lic
 system/app/ExtensionsService/ExtensionsService.apk
 system/etc/permissions/privapp-permissions-oplus.xml
 my_product/etc/camera/cdr_aging_set.json:product/etc/camera/cdr_aging_set.json
