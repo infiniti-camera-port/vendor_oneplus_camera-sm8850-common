@@ -225,6 +225,3 @@ my_product/etc/camera/cdr_aging_set.json:product/etc/camera/cdr_aging_set.json
 my_product/etc/camera/engineer_camera_config.json:product/etc/camera/engineer_camera_config.json
 system_ext/lib64/liboplushwui_jni.so
 system_ext/lib64/libcsextimpl.so
-# OEM camera HAL layer selected by ro.hardware.camera=oemlayer.v2.
-# Keep common so all sm8850 variants ship the same runtime camera module.
-odm/lib64/hw/camera.oemlayer.v2.so;DISABLE_CHECKELF;DISABLE_DEPS
