@@ -189,14 +189,6 @@ system_ext/priv-app/StdID/StdID.apk
 # clean replay, losing the blobs. Restored verbatim from the working reference.
 system_ext/lib64/liboplusavenhancements.so;DISABLE_DEPS;DISABLE_CHECKELF
 system_ext/lib64/liboplussfplugin_ccodec.so;DISABLE_DEPS;DISABLE_CHECKELF
-odm/lib/lib_cryptoeng_api.so;DISABLE_DEPS
-odm/lib/libqsee_keybox_ca.so;DISABLE_DEPS
-odm/lib/vendor.oplus.hardware.cryptoeng-V1-ndk.so;MODULE_SUFFIX=_odm;DISABLE_DEPS
-odm/lib/vendor.oplus.hardware.cryptoeng@1.0.so;MODULE_SUFFIX=_odm;DISABLE_DEPS
-odm/lib/libfido_factory.so;DISABLE_DEPS
-odm/lib/libfido2_factory.so;DISABLE_DEPS
-odm/lib/vendor.oplus.hardware.fido.fidoca-V1-ndk.so;DISABLE_DEPS
-odm/lib/vendor.oplus.hardware.fido.fido2ca-V1-ndk.so;DISABLE_DEPS
 system_ext/priv-app/OplusAppPlatform/OplusAppPlatform.apk
 my_product/lib64/libApsSuperEISPreviewJni.so:system_ext/lib64/libApsSuperEISPreviewJni.so
 my_product/lib64/libMsEffectSdk.so:system_ext/lib64/libMsEffectSdk.so
