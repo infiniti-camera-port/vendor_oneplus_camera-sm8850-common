@@ -225,19 +225,3 @@ my_product/etc/camera/cdr_aging_set.json:product/etc/camera/cdr_aging_set.json
 my_product/etc/camera/engineer_camera_config.json:product/etc/camera/engineer_camera_config.json
 system_ext/lib64/liboplushwui_jni.so
 system_ext/lib64/libcsextimpl.so
-# OEM camera HAL layer selected by ro.hardware.camera=oemlayer.v2.
-# Keep common so all sm8850 variants ship the same runtime camera module.
-odm/lib64/hw/camera.oemlayer.v2.so;DISABLE_CHECKELF;DISABLE_DEPS
-
-# OEM camera layer siblings
-# One ABI unit with camera.oemlayer.v2.so above, so they must be extracted from
-# the SAME donor. Through 16.0.9 they were declared per-device instead, so infiniti
-# shipped its own copies, which define none of g_enableLogError, g_enableLogInfo,
-# g_enableLogVerbose, g_enableLogWarning. macan's v2 needs all four: dlopen failed,
-# camx registered a null HAL module anyway and SIGSEGV'd in notifyDeviceStateChange,
-# leaving 0 cameras on-device. The macan/macanc/fairlady copies are byte-identical
-# to these, so moving the set here changes shipped bytes on infiniti only.
-odm/lib64/camera.oemlayer.adapter.so;DISABLE_CHECKELF;DISABLE_DEPS
-odm/lib64/camera.oemlayer.healthmonitor.so;DISABLE_CHECKELF;DISABLE_DEPS
-odm/lib64/camera.oemlayer.logger.so;DISABLE_CHECKELF;DISABLE_DEPS
-odm/lib64/camera.oemlayer.uilayer.so;DISABLE_CHECKELF;DISABLE_DEPS
