@@ -9,4 +9,5 @@ materializes here under `camera/` (gitignored).
 
 - Build path: `vendor/oneplus/camera-sm8850-common`
 - Carved (history-preserving) from `infiniti-camera-port/vendor_oplus_camera` @ `3a76ca3` (`staging/16.0_crdroid`).
-- Inherited via `vendor/oneplus/camera-infiniti/camera-infiniti.mk` -> `camera-sm8850-common.mk`.
+- Inherited via each device's camera makefile -> `camera-sm8850-common.mk`:
+  `camera-infiniti.mk`, `camera-macan.mk`, `camera-macanc.mk`, `camera-fairlady.mk`.

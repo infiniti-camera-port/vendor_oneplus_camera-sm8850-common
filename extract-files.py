@@ -85,7 +85,7 @@ def blob_fixup_apk_unpack_nosmali(ctx, file, file_path, *args, tmp_dir=None, **k
 
 
 def blob_fixup_opluscamera_font(ctx, file, file_path, *args, tmp_dir=None, **kwargs):
-    # OEM camera font-NPE neutralizer, re-anchored for infiniti: the
+    # OEM camera font-NPE neutralizer, anchored on the shared camera app: the
     # TypeFaceUtil static a(Context)->Typeface reads OplusBaseConfiguration.
     # mOplusExtraConfiguration.mFontVariationSettings; with the OEM font framework absent that
     # path crashes -> camera force-finishes on open. Return Typeface.DEFAULT to skip it.

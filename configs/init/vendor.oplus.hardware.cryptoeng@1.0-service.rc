@@ -22,7 +22,7 @@
 ## Device-tree-authored replacement for the OEM odm/etc/init blob. Identical to the
 ## stock service definition minus the SM6450-only PPID-license block, which was a
 ## shell-style `if [ ... ]; then ... fi` that AOSP init cannot parse (host_init_verifier
-## rejects it) and whose ro.soc.model gate can never match infiniti (SM8850). The
+## rejects it) and whose ro.soc.model gate can never match SM8850 (canoe). The
 ## post-fs-data restorecon that the OEM rc omits is added here.
 
 on post-fs-data

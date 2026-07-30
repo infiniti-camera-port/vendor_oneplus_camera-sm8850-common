@@ -1,5 +1,5 @@
 ## SoC-common (sm8850/canoe) camera blob listing — carved from vendor_oplus_camera @ 3a76ca3 (staging/16.0_crdroid).
-## Base donor OnePlus 15R (macan) OOS 11.A.47 per rearch-scheme-infiniti-branch-on-common.md §1; runtime-adapted across variants.
+## Base donor OnePlus 15R (macan), CPH2767_16.0.9.401; runtime-adapted across all four SM8850 variants.
 
 # Camera
 my_product/app/OplusCamera/OplusCamera.apk:system_ext/priv-app/OplusCamera/OplusCamera.apk;OVERRIDES=Camera2,GoogleCameraGo
