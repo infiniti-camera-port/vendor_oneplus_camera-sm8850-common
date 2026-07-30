@@ -12,6 +12,7 @@ my_product/lib64/libAncHumanDoubleExposure-jni.so:system_ext/lib64/libAncHumanDo
 my_product/lib64/libAncHumanRetain-jni_v2.so:system_ext/lib64/libAncHumanRetain-jni_v2.so
 my_product/lib64/libAncHumanSegFigureFusion-jni.so:system_ext/lib64/libAncHumanSegFigureFusion-jni.so
 my_product/lib64/libAncHumanVideo-jni.so:system_ext/lib64/libAncHumanVideo-jni.so
+my_product/lib64/libApsAICompositionJni.so:system_ext/lib64/libApsAICompositionJni.so
 my_product/lib64/libApsFaceBeautyPreviewProductJni.so:system_ext/lib64/libApsFaceBeautyPreviewProductJni.so;FIX_SONAME;DISABLE_CHECKELF
 my_product/lib64/libAvatarEngineRender.so:system_ext/lib64/libAvatarEngineRender.so
 my_product/lib64/libAvatarEngineRenderNative.so:system_ext/lib64/libAvatarEngineRenderNative.so
