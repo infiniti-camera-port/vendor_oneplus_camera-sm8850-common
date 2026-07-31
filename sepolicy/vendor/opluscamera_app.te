@@ -53,7 +53,11 @@ allow opluscamera_app package_native_service:service_manager find;
 allow opluscamera_app permission_service:service_manager find;
 allow opluscamera_app vendor_hal_offlinecamera_service:service_manager find;
 allow opluscamera_app hal_system_suspend_service:service_manager find;
-allow opluscamera_app vendor_hal_unsignedhexlp_service:service_manager find;
+# The unsigned-PD hexlp NPU service is neverallow'd to app domains
+# (sepolicy_vndr sm8850/qva unsignedhexlpservice.te). The app only probes for it;
+# the real DSP session goes through the HAL, so silence the probe rather than
+# grant it - same pattern as the qspmhal line below.
+dontaudit opluscamera_app vendor_hal_unsignedhexlp_service:service_manager find;
 dontaudit opluscamera_app vendor_hal_qspmhal_service:service_manager find;
 
 
