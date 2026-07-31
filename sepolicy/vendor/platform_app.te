@@ -10,7 +10,10 @@ allow platform_app vendor_file:dir watch;
 # AI editor (AI Eraser): AIUnit runs in the platform_app domain after the
 # platform-resign, and dlopen+executes downloaded Hexagon NPU model engine/plugin
 # .so libs from its data dir, discovers the unsigned-PD hexlp NPU + cryptoeng
-# attestation services, and loads the remapped stock libui-stock.so. Captured in
+# attestation services, and loads libui.so pulled in via libsharebuffer_impl.
+# (It used to load a remapped libui-stock.so; that alias was removed - it put a
+# second libui/libutils instance in the process and broke the ShareBuffer
+# allocator singleton. See 12-hybridraw-mode-switch.md.) Captured in
 # permissive; AI Eraser works once these are granted.
 #
 # A dedicated aiunit_app seapp domain would scope these to AIUnit rather than
